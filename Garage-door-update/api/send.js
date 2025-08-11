@@ -1,20 +1,23 @@
 import nodemailer from 'nodemailer';
 
 export default async function handler(req, res) {
-  // Add CORS headers to allow requests from anywhere (or specify your frontend domain)
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Set CORS headers for all responses.
+  // This must be done for both the OPTIONS and POST requests.
+  res.setHeader('Access-Control-Allow-Origin', '*'); 
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight requests
+  // Handle CORS preflight requests (OPTIONS).
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
+  // Allow only POST requests.
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
-
+  
+  // The rest of your code remains the same.
   const { form_name, from_email, phone, suburb, message } = req.body;
 
   if (!form_name || !from_email || !phone || !suburb || !message) {
